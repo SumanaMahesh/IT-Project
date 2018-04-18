@@ -1,28 +1,26 @@
 <?php
-   include("config.php");
-   session_start();
-   
-   if($_SERVER["REQUEST_METHOD"] == "POST") {
-      // username and password sent from form 
-      
-      $myusername = $_POST['username'];
-      $mypassword = $_POST['password']; 
-      
-      $query = "SELECT username FROM login WHERE username = \"$myusername\"" ;
-      $result = mysqli_query($dbh,$query) 
-		or die ('Error executing the query' .mysqli_err($dbh));
-	//$row['id'] $row['password']	
-      if($mysqli_num_rows($result)!= 1)
-	die("User doesn't exist");
-	$row=mysqli_fetch_array($result);
+	include 'config.php';
+	$myusername = $_POST['username'];
+	$mypassword = $_POST['password']; 
+	if(isset($_GET['sel'] && ! empty($_GET['sel']))
+	   {
+		   $username=$_GET['sel'];
+		   echo "candidate=".$username;
+	   }
+	   else echo ("Hello".$_GET
+	$query = "select * from login where username = \"$myusername\"" ;
+	$result = mysqli_query($dbh,$query) 
+		or die ('Error executing the query' .mysqli_error($dbh));
+	if($mysqli_num_rows($result)!= 1)
+		die("User doesn't exist");
+		$row=mysqli_fetch_array($result);
 	if($row['password']==$mypassword)
 	{
-		header("location: welcome.php");
+		header("location: vote.html");
 		echo("Success!");
- 	}
-	else
-	{
-		header("location: login.html");
 	}
-   
+	else
+	{	
+		header("location: login.html");
+	} 
 ?>
